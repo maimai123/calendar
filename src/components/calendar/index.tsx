@@ -2,31 +2,29 @@ import Taro from "@tarojs/taro";
 import React, { useState, useEffect } from "react";
 import { View, Text, Image } from "@tarojs/components";
 import moment from "moment";
+import { connect } from "react-redux";
 import classnames from "classnames";
+import {
+  setMonthLists,
+  setCurrentMonths,
+  setCurrentDates,
+} from "../../store/actions";
+import { weekList, monthLists } from "../../constants/index";
 import "./index.less";
 
-const PageIndex: React.FC = () => {
-  const [monthList, setMonthList] = useState<any[]>([]);
-  const [current, setCurrent] = useState(moment().format("YYYY-MM")); // 当前月份
-  const [choose, setChoose] = useState(); // 当前选择日期
+const PageIndex: React.FC = (props: any) => {
+  const {
+    monthList,
+    setMonthList,
+    currentMonth,
+    setCurrentMonth,
+    currentDate,
+    setCurrentDate,
+  } = props;
   const [expand, setExpand] = useState(true); // 是否展开
-  const currentYear = moment(current).year();
-  const currentMonth = moment(current).month() + 1;
-  const weekList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const monthLists = new Map([
-    [1, "Jan"],
-    [2, "Feb"],
-    [3, "Mar"],
-    [4, "Apr"],
-    [5, "May"],
-    [6, "Jun"],
-    [7, "JView"],
-    [8, "Aug"],
-    [9, "Sep"],
-    [10, "Oct"],
-    [11, "Nov"],
-    [12, "Dec"],
-  ]);
+  const currentYear = moment(currentMonth).year();
+  // const currentMonth = moment(current).month() + 1;
+
   const [festival, setFestival] = useState([]); // 前后7天节日列表
 
   const infoList = {
@@ -36,12 +34,12 @@ const PageIndex: React.FC = () => {
   };
 
   useEffect(() => {
-    getMonthList(current);
-  }, [current, expand]);
+    getMonthList(currentMonth);
+  }, [currentMonth, expand]);
 
   useEffect(() => {
-    getHoliday(current);
-  }, [current]);
+    getHoliday(currentMonth);
+  }, [currentMonth]);
 
   const getHoliday = async (date: string) => {
     // const formatDate = moment(date).format("YYYYMM");
@@ -65,9 +63,9 @@ const PageIndex: React.FC = () => {
     const dateList: any[] = [];
     const thisIndex = moment(`${date}-01`).day();
     const first = !expand
-      ? moment(choose).startOf("week")
+      ? moment(currentDate).startOf("week")
       : moment(`${date}-01`).add(-thisIndex, "d").format("YYYY-MM-DD HH:mm:ss");
-    const len = choose && !expand ? 7 : 35;
+    const len = currentDate && !expand ? 7 : 35;
     for (let i = 0; i < len; i++) {
       let type;
       if (
@@ -99,7 +97,9 @@ const PageIndex: React.FC = () => {
           <Text
             className='prev'
             onClick={() =>
-              setCurrent(moment(current).add(-1, "months").format("YYYY-MM"))
+              setCurrentMonth(
+                moment(currentMonth).add(-1, "months").format("YYYY-MM")
+              )
             }
           />
           <View>
@@ -109,7 +109,9 @@ const PageIndex: React.FC = () => {
           <Text
             className='next'
             onClick={() =>
-              setCurrent(moment(current).add(+1, "months").format("YYYY-MM"))
+              setCurrentMonth(
+                moment(currentMonth).add(+1, "months").format("YYYY-MM")
+              )
             }
           />
         </View>
@@ -123,18 +125,18 @@ const PageIndex: React.FC = () => {
             <View
               key={i}
               onClick={() => {
-                setChoose(item.day);
-                if (item.day != choose) {
+                setCurrentDate(item.day);
+                if (item.day != currentDate) {
                   setExpand(false);
-                } else if (item.day === choose && !expand) {
+                } else if (item.day === currentDate && !expand) {
                   setExpand(true);
                 }
               }}
               className={classnames(
                 "date-item",
                 item.type === 1 && "weekend",
-                item.type === 2 && !choose && "today",
-                choose === item.day && "choose",
+                item.type === 2 && !currentDate && "today",
+                currentDate === item.day && "choose",
                 item.type === 3 && "otherMonth"
               )}
             >
@@ -153,4 +155,16 @@ const PageIndex: React.FC = () => {
   );
 };
 
-export default PageIndex;
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+  };
+};
+
+const mapDispatchToProps = {
+  setMonthList: setMonthLists,
+  setCurrentMonth: setCurrentMonths,
+  setCurrentDate: setCurrentDates,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PageIndex);
