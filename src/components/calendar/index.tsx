@@ -1,10 +1,8 @@
 import Taro from "@tarojs/taro";
 import React, { useState, useEffect } from "react";
 import { View, Text } from "@tarojs/components";
-import { observer, inject } from "mobx-react";
 import classnames from "classnames";
 import moment from "moment";
-import { PageStateProps } from "../../constants/types";
 import LunarDate from "../../components/LunarDate";
 import {
   weekList,
@@ -14,10 +12,12 @@ import {
 } from "../../constants/index";
 import "./index.scss";
 
-const PageIndex: React.FC = (props: PageStateProps) => {
-  const {
-    store: { memoStore },
-  } = props;
+interface IProps {
+  memoList: any;
+}
+
+const PageIndex: React.FC<IProps> = (props: IProps) => {
+  const { memoList } = props;
   const [monthList, setMonthList] = useState<any[]>([]);
   const [current, setCurrent] = useState(moment().format("YYYY-MM")); // 当前月份
   const [choose, setChoose] = useState(moment().format("YYYY-MM-DD")); // 当前选择日期
@@ -90,7 +90,7 @@ const PageIndex: React.FC = (props: PageStateProps) => {
     setMonthList(dateList);
   };
 
-  console.log(memoStore.list);
+  console.log(memoList);
 
   return (
     <View className='box'>
@@ -138,7 +138,7 @@ const PageIndex: React.FC = (props: PageStateProps) => {
                 item.type === 3 && "otherMonth"
               )}
             >
-              {memoStore.list[item.day] && <Text className='date-item-doc' />}
+              {memoList[item.day] && <Text className='date-item-doc' />}
               <View>{moment(item.day).format("DD")}</View>
             </View>
           ))}
@@ -159,4 +159,4 @@ const PageIndex: React.FC = (props: PageStateProps) => {
   );
 };
 
-export default inject("store")(observer(PageIndex));
+export default PageIndex;

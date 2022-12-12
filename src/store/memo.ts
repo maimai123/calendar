@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { observable } from "mobx";
 
 const memoStore = observable({
   list: {
@@ -7,11 +7,11 @@ const memoStore = observable({
     "2022-12-16": "这里记录了一些内容",
   },
   add(type: string, content: string) {
-    this.list[type] = content
+    this.list[type] = content;
   },
   delete(type: string) {
-    delete this.list[type]
+    delete this.list[type];
   },
-})
+});
 
-export default memoStore
+export default memoStore;

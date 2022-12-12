@@ -26,13 +26,17 @@ const Create: React.FC = (props: PageStateProps) => {
       setVisible(true);
     } else {
       memoStore.add(date, content);
-      Taro.navigateBack();
+      Taro.switchTab({
+        url: `/pages/mine/index`,
+      });
     }
   };
 
   const handleDel = () => {
     memoStore.delete(date);
-    Taro.navigateBack();
+    Taro.switchTab({
+      url: `/pages/mine/index`,
+    });
   };
 
   return (
