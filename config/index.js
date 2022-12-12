@@ -1,6 +1,6 @@
 const config = {
-  projectName: 'voteApp',
-  date: '2022-12-6',
+  projectName: 'calendarApp',
+  date: '2022-12-12',
   designWidth: 750,
   deviceRatio: {
     640: 2.34 / 2,
@@ -61,14 +61,6 @@ const config = {
           namingPattern: 'module', // 转换模式，取值为 global/module
           generateScopedName: '[name]__[local]___[hash:base64:5]'
         }
-      }
-    }
-  },
-  rn: {
-    appName: 'taroDemo',
-    postcss: {
-      cssModules: {
-        enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
       }
     }
   }

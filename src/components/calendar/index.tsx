@@ -1,19 +1,23 @@
 import Taro from "@tarojs/taro";
 import React, { useState, useEffect } from "react";
-import { View, Text, Image } from "@tarojs/components";
-import moment from "moment";
+import { View, Text } from "@tarojs/components";
+import { observer, inject } from "mobx-react";
 import classnames from "classnames";
+import moment from "moment";
+import { PageStateProps } from "../../constants/types";
 import LunarDate from "../../components/LunarDate";
 import {
   weekList,
-  weekListCN,
   monthLists,
   APP_ID,
   APP_SECRET,
 } from "../../constants/index";
-import "./index.less";
+import "./index.scss";
 
-const PageIndex: React.FC = () => {
+const PageIndex: React.FC = (props: PageStateProps) => {
+  const {
+    store: { memoStore },
+  } = props;
   const [monthList, setMonthList] = useState<any[]>([]);
   const [current, setCurrent] = useState(moment().format("YYYY-MM")); // 当前月份
   const [choose, setChoose] = useState(moment().format("YYYY-MM-DD")); // 当前选择日期
@@ -21,14 +25,7 @@ const PageIndex: React.FC = () => {
   const currentYear = moment(current).year();
   const currentMonth = moment(current).month() + 1;
   const [list, setList] = useState<string[]>([]); // 点过的月份
-
   const [lunarDate, setLunarDate] = useState<any[]>([]);
-
-  const infoList = {
-    "2022-12-07": "这里记录了一些内容",
-    "2022-12-27": "这里记录了一些内容",
-    "2022-12-16": "这里记录了一些内容",
-  };
 
   useEffect(() => {
     getMonthList(current);
@@ -93,6 +90,8 @@ const PageIndex: React.FC = () => {
     setMonthList(dateList);
   };
 
+  console.log(memoStore.list);
+
   return (
     <View className='box'>
       <View className={classnames("calendar", expand && "calendar-clock")}>
@@ -139,7 +138,7 @@ const PageIndex: React.FC = () => {
                 item.type === 3 && "otherMonth"
               )}
             >
-              {infoList[item.day] && <Text className='date-item-doc' />}
+              {memoStore.list[item.day] && <Text className='date-item-doc' />}
               <View>{moment(item.day).format("DD")}</View>
             </View>
           ))}
@@ -160,4 +159,4 @@ const PageIndex: React.FC = () => {
   );
 };
 
-export default PageIndex;
+export default inject("store")(observer(PageIndex));

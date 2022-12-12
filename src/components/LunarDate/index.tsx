@@ -1,7 +1,7 @@
 import { View } from "@tarojs/components";
 import classnames from "classnames";
 import { weekListCN, wordsList } from "../../constants";
-import "./index.less";
+import "./index.scss";
 
 interface IProps {
   lunarDate: {
@@ -37,7 +37,9 @@ const TopBg = (props: IProps) => {
             <View className='lunar-tags-label'>宜</View>
             <View className='lunar-tags-list'>
               {lunarDate?.suit.split(/[.]/).map((item) => (
-                <View className='tag'>{item}</View>
+                <View className='tag' key={item}>
+                  {item}
+                </View>
               ))}
             </View>
           </View>
@@ -45,7 +47,9 @@ const TopBg = (props: IProps) => {
             <View className='lunar-tags-label'>宜</View>
             <View className='lunar-tags-list'>
               {lunarDate?.avoid.split(/[.]/).map((item) => (
-                <View className='tag'>{item}</View>
+                <View className='tag' key={item}>
+                  {item}
+                </View>
               ))}
             </View>
           </View>

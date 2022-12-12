@@ -1,5 +1,10 @@
 export default defineAppConfig({
-  pages: ["pages/index/index", "pages/list/index", "pages/mine/index", "pages/create/index"],
+  pages: [
+    "pages/index/index",
+    "pages/list/index",
+    "pages/mine/index",
+    "pages/create/index",
+  ],
   window: {
     backgroundColor: "#fff",
     backgroundTextStyle: "light",

@@ -1,8 +1,8 @@
 import { View } from "@tarojs/components";
-import "./index.less";
+import "./index.scss";
 
 const TopBg = () => {
-  return <View className='topBg' />;
+  return <View className='topBg' key='1' />;
 };
 
 export default TopBg;

@@ -2,7 +2,7 @@ import { Component } from "react";
 import Taro from "@tarojs/taro";
 import { CoverView, CoverImage } from "@tarojs/components";
 
-import "./index.less";
+import "./index.scss";
 
 export default class Index extends Component {
   state = {

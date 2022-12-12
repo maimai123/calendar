@@ -1,9 +1,13 @@
 {
   "miniprogramRoot": "./",
-  "projectname": "voteApp",
-  "appid": "testAppId",
+  "projectname": "calendarApp",
+  "description": "日历小程序",
+  "appid": "touristappid",
   "setting": {
+    "urlCheck": true,
     "es6": false,
+    "postcss": false,
     "minified": false
-  }
+  },
+  "compileType": "miniprogram"
 }

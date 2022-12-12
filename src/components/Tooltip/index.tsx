@@ -1,7 +1,7 @@
 import { View } from "@tarojs/components";
 import classnames from "classnames";
 import { weekListCN, wordsList } from "../../constants";
-import "./index.less";
+import "./index.scss";
 
 interface IProps {
   lunarDate: {

@@ -4,7 +4,7 @@ import Taro from "@tarojs/taro";
 import { list } from "../../constants/index";
 
 import type CustomTabBar from "../../custom-tab-bar";
-import "./index.less";
+import "./index.scss";
 
 export default class Index extends Component {
   pageCtx = Taro.getCurrentInstance().page;

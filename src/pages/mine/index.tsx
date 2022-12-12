@@ -5,7 +5,7 @@ import TopBg from "../../components/common/Topbg";
 import Calendar from "../../components/calendar";
 
 import type CustomTabBar from "../../custom-tab-bar";
-import "./index.less";
+import "./index.scss";
 
 export default class Index extends Component {
   pageCtx = Taro.getCurrentInstance().page;
