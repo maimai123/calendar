@@ -1,0 +1,82 @@
+.lunarDate {
+  position: relative;
+  width: 100%;
+  font-size: 32px;
+  color: #333;
+  padding: 42px 24px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 130px;
+    height: 8px;
+    background-color: #ef8784;
+    border-radius: 8px;
+    margin-left: -65px;
+  }
+
+  .lunar {
+    &-title {
+      display: flex;
+      justify-content: center;
+      line-height: 1.4;
+
+      &:last-child {
+        margin-top: 10px;
+        opacity: 0.65;
+      }
+    }
+
+    &-tags {
+      display: flex;
+      align-items: flex-start;
+      font-size: 28px;
+      margin-top: 8px;
+      padding: 0 12px;
+
+      &-label {
+        font-size: 32px;
+        margin: 20px 20px 0 0;
+      }
+
+      &-list {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+
+        .tag {
+          padding: 8px 16px;
+          border-radius: 24px;
+          margin: 16px 0 0 16px;
+        }
+      }
+
+      &-suit {
+        color: #49caa9;
+
+        .tag {
+          background-color: rgba(218, 251, 243, 0.65);
+        }
+      }
+
+      &-avoid {
+        color: #a80010;
+
+        .tag {
+          background-color: rgba(168, 0, 16, 0.08);
+        }
+      }
+    }
+  }
+}
+
+.words {
+  background: #9dc4ec;
+  color: #fff;
+  padding: 24px;
+  border-radius: 24px;
+  width: 700px;
+  margin: 20px auto 0;
+}

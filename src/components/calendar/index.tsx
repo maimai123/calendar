@@ -3,31 +3,26 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Image } from "@tarojs/components";
 import moment from "moment";
 import classnames from "classnames";
+import LunarDate from "../../components/LunarDate";
+import {
+  weekList,
+  weekListCN,
+  monthLists,
+  APP_ID,
+  APP_SECRET,
+} from "../../constants/index";
 import "./index.less";
 
 const PageIndex: React.FC = () => {
   const [monthList, setMonthList] = useState<any[]>([]);
   const [current, setCurrent] = useState(moment().format("YYYY-MM")); // 当前月份
-  const [choose, setChoose] = useState(); // 当前选择日期
+  const [choose, setChoose] = useState(moment().format("YYYY-MM-DD")); // 当前选择日期
   const [expand, setExpand] = useState(true); // 是否展开
   const currentYear = moment(current).year();
   const currentMonth = moment(current).month() + 1;
-  const weekList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const monthLists = new Map([
-    [1, "Jan"],
-    [2, "Feb"],
-    [3, "Mar"],
-    [4, "Apr"],
-    [5, "May"],
-    [6, "Jun"],
-    [7, "JView"],
-    [8, "Aug"],
-    [9, "Sep"],
-    [10, "Oct"],
-    [11, "Nov"],
-    [12, "Dec"],
-  ]);
-  const [festival, setFestival] = useState([]); // 前后7天节日列表
+  const [list, setList] = useState<string[]>([]); // 点过的月份
+
+  const [lunarDate, setLunarDate] = useState<any[]>([]);
 
   const infoList = {
     "2022-12-07": "这里记录了一些内容",
@@ -40,23 +35,29 @@ const PageIndex: React.FC = () => {
   }, [current, expand]);
 
   useEffect(() => {
-    getHoliday(current);
+    getLunarDate(current);
   }, [current]);
 
-  const getHoliday = async (date: string) => {
+  const getLunarDate = async (cur: string) => {
     // const formatDate = moment(date).format("YYYYMM");
     // https://www.mxnzp.com/api/holiday/list/month/${formatDate}/festival // 当前月份节日
+    // https://www.mxnzp.com/api/holiday/single/${moment(choose).format("YYYYMMDD" )} // 当天农历
+    if (list.includes(cur)) return;
     Taro.request({
-      url: `https://www.mxnzp.com/api/holiday/recent/list`, // 前后7天节日
+      url: `https://www.mxnzp.com/api/holiday/list/month/${moment(cur).format(
+        "YYYYMM"
+      )}`,
       data: {
-        app_id: "rspnvejoskb9njip",
-        app_secret: "UHVyV1pUUUl2bXp1WitnTFc1cEM5QT09",
+        app_id: APP_ID,
+        app_secret: APP_SECRET,
       },
       header: {
         "content-type": "application/json", // 默认值
       },
       success: function (res) {
-        setFestival(res.data?.data || []);
+        if (!res?.data?.data) return;
+        setList(list.concat(cur));
+        setLunarDate(lunarDate.concat(res.data?.data || []));
       },
     });
   };
@@ -74,13 +75,13 @@ const PageIndex: React.FC = () => {
         moment(first).add(i, "d").format("MM") !== moment(date).format("MM")
       ) {
         type = 3; // 不是本月
-      } else if ([0, 6].includes(moment(first).add(i, "d").day())) {
-        type = 1; // 周末
       } else if (
         moment(first).add(i, "d").format("YYYY-MM-DD") ===
         moment().format("YYYY-MM-DD")
       ) {
         type = 2; // 当天
+      } else if ([0, 6].includes(moment(first).add(i, "d").day())) {
+        type = 1; // 周末
       } else {
         type = 0;
       }
@@ -94,7 +95,7 @@ const PageIndex: React.FC = () => {
 
   return (
     <View className='box'>
-      <View className='calendar'>
+      <View className={classnames("calendar", expand && "calendar-clock")}>
         <View className='calendar-head'>
           <Text
             className='prev'
@@ -125,9 +126,9 @@ const PageIndex: React.FC = () => {
               onClick={() => {
                 setChoose(item.day);
                 if (item.day != choose) {
-                  setExpand(false);
-                } else if (item.day === choose && !expand) {
-                  setExpand(true);
+                  setExpand(expand);
+                } else {
+                  setExpand(!expand);
                 }
               }}
               className={classnames(
@@ -143,12 +144,18 @@ const PageIndex: React.FC = () => {
             </View>
           ))}
         </View>
-        {!expand ? (
-          <View className='wrapper'>
-            <Image src={require(`../../images/banner_01.png`)} />
-          </View>
-        ) : null}
       </View>
+      <LunarDate
+        lunarDate={lunarDate.filter((item) => item.date === choose)[0]}
+      />
+      <View
+        className='addBtn'
+        onClick={() =>
+          Taro.navigateTo({
+            url: `/pages/create/index?date=${choose}`,
+          })
+        }
+      />
     </View>
   );
 };

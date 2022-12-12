@@ -1,11 +1,22 @@
 .box {
   width: 100%;
-  min-height: 100vh;
-  background: #fff;
+  // min-height: 100vh;
+  margin-top: -100px;
 
   .calendar {
-    width: 700px;
+    width: 710px;
+    height: 246px;
     margin: 32px auto;
+    padding: 16px 16px 32px 16px;
+    background-color: #fff;
+    border-radius: 32px 32px;
+    transition: height 0.5s ease-in-out;
+    overflow: hidden;
+
+    &-clock {
+      height: 500px;
+      box-shadow: 0px 0px 35px 0px rgba(255, 21, 126, 0.25);
+    }
 
     &-head {
       display: flex;
@@ -71,9 +82,9 @@
 
         View {
           display: inline-block;
-          width: 48px;
-          height: 48px;
-          line-height: 48px;
+          width: 52px;
+          height: 52px;
+          line-height: 52px;
           text-align: center;
         }
 
@@ -118,4 +129,19 @@
       }
     }
   }
+}
+.addBtn {
+  position: fixed;
+  bottom: 220px;
+  right: 40px;
+  width: 108px;
+  height: 108px;
+  background: url("../../images/add.png") no-repeat,
+    linear-gradient(180deg, #f591fc61 0%, #8680bee0 100%);
+  background-size: 60% 60%, 100%;
+  background-position: center center;
+  box-shadow: 0px 0px 2px 0px rgb(134 125 190 / 65%),
+    inset 0px 4px 6px 0px rgb(245 145 252 / 34%);
+  border-radius: 50%;
+  z-index: 999;
 }

@@ -1,5 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: "我的",
-  usingComponents: {},
+  navigationBarTitleText: "新建日程",
   navigationStyle: "custom",
 });
